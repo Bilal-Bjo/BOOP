@@ -1,0 +1,86 @@
+watch_folder: ~/Downloads
+debounce_seconds: 2
+
+categories:
+  Images:
+    - .jpg
+    - .jpeg
+    - .png
+    - .gif
+    - .svg
+    - .webp
+    - .heic
+    - .ico
+    - .bmp
+    - .tiff
+
+  Documents:
+    - .pdf
+    - .doc
+    - .docx
+    - .xls
+    - .xlsx
+    - .ppt
+    - .pptx
+    - .txt
+    - .rtf
+    - .odt
+    - .csv
+
+  Videos:
+    - .mp4
+    - .mov
+    - .avi
+    - .mkv
+    - .webm
+    - .flv
+    - .wmv
+
+  Audio:
+    - .mp3
+    - .wav
+    - .aac
+    - .flac
+    - .m4a
+    - .ogg
+    - .wma
+
+  Archives:
+    - .zip
+    - .rar
+    - .7z
+    - .tar
+    - .gz
+    - .bz2
+    - .xz
+
+  Code:
+    - .py
+    - .js
+    - .ts
+    - .html
+    - .css
+    - .json
+    - .xml
+    - .yaml
+    - .yml
+    - .sh
+    - .sql
+
+  Applications:
+    - .dmg
+    - .pkg
+    - .app
+    - .exe
+    - .msi
+
+  Fonts:
+    - .ttf
+    - .otf
+    - .woff
+    - .woff2
+
+  Ebooks:
+    - .epub
+    - .mobi
+    - .azw3
