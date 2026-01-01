@@ -15,23 +15,39 @@ echo ""
 echo "  Installing Boop..."
 echo ""
 
-# Remove old versions if exist
+# Stop any running Boop instance
+echo "  Stopping existing Boop instance..."
 launchctl unload "$HOME/Library/LaunchAgents/com.user.downloadorganizer.plist" 2>/dev/null || true
 launchctl unload "$PLIST_DEST" 2>/dev/null || true
+pkill -f "app.py" 2>/dev/null || true
+sleep 1
+
+# Remove old versions
 rm -f "$HOME/Library/LaunchAgents/com.user.downloadorganizer.plist"
 rm -rf "/Applications/Download Organizer.app"
+rm -rf "$APP_PATH"
+
+# Remove old venv to ensure clean install
+if [ -d "$VENV_DIR" ]; then
+    echo "  Removing old virtual environment..."
+    rm -rf "$VENV_DIR"
+fi
 
 # Create virtual environment
+echo "  Creating virtual environment..."
 python3 -m venv "$VENV_DIR"
 source "$VENV_DIR/bin/activate"
 
 # Install dependencies
+echo "  Installing dependencies..."
+pip install --upgrade pip --quiet
 pip install watchdog pyyaml rumps Pillow --quiet
 
 # Generate icon
 python "$PROJECT_DIR/icon.py"
 
 # Create app bundle
+echo "  Creating app bundle..."
 mkdir -p "$APP_PATH/Contents/MacOS"
 mkdir -p "$APP_PATH/Contents/Resources"
 
@@ -99,6 +115,7 @@ EOF
 # Load the service
 launchctl load "$PLIST_DEST"
 
+echo ""
 echo "  ✨ Boop is ready!"
 echo "  Look for ✨ in your menu bar."
 echo ""

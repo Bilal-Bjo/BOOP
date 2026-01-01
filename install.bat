@@ -22,6 +22,18 @@ if errorlevel 1 (
 set "BOOP_DIR=%~dp0"
 cd /d "%BOOP_DIR%"
 
+:: Stop any running Boop instance
+echo   Stopping existing Boop instance...
+taskkill /f /im pythonw.exe /fi "WINDOWTITLE eq *" 2>nul
+taskkill /f /im python.exe /fi "WINDOWTITLE eq *" 2>nul
+timeout /t 1 /nobreak >nul
+
+:: Remove old venv to ensure clean install
+if exist ".venv" (
+    echo   Removing old virtual environment...
+    rmdir /s /q ".venv" 2>nul
+)
+
 :: Create virtual environment
 echo   Creating virtual environment...
 python -m venv .venv
@@ -34,6 +46,7 @@ if errorlevel 1 (
 :: Activate and install dependencies
 echo   Installing dependencies...
 call .venv\Scripts\activate.bat
+pip install --upgrade pip --quiet
 pip install watchdog pyyaml pystray Pillow --quiet
 if errorlevel 1 (
     echo   ERROR: Failed to install dependencies.
@@ -49,7 +62,7 @@ if not exist "%PYTHON_PATH%" (
 
 set "SCRIPT_PATH=%BOOP_DIR%app.py"
 
-:: Create startup shortcut
+:: Create startup shortcut (overwrites existing)
 echo   Creating startup shortcut...
 set "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 
