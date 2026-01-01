@@ -488,12 +488,11 @@ def run_windows_linux():
         return img
 
     boop = Boop()
-    last_file_text = "No recent files"
+    state = {"last_file": "No recent files"}
 
     def on_file_moved(path: Path, category: str):
-        nonlocal last_file_text
         name = path.name if len(path.name) <= 30 else path.name[:27] + "..."
-        last_file_text = f"{name} → {category}"
+        state["last_file"] = f"{name} → {category}"
         send_notification("Boop", f"Booped: {name} → {category}")
 
     boop.on_file_moved = on_file_moved
@@ -516,7 +515,7 @@ def run_windows_linux():
     menu = pystray.Menu(
         pystray.MenuItem("✓ Monitoring Downloads", lambda: None, enabled=False),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem(lambda text: last_file_text, open_last),
+        pystray.MenuItem(lambda text: state["last_file"], open_last),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem("Reorganize Now", reorganize),
         pystray.MenuItem("Open Downloads Folder", open_downloads),
