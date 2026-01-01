@@ -5,7 +5,7 @@ A tiny cross-platform system tray app that magically organizes your Downloads fo
 ```
      ╔═══════════════════════════════════════╗
      ║                                       ║
-     ║         ✨ JUST BOOP IT ✨            ║
+     ║        ✨ JUST BOOP IT ✨             ║
      ║                                       ║
      ║   Downloads messy? Don't stress.      ║
      ║   Boop handles the rest.              ║
@@ -39,11 +39,25 @@ A tiny cross-platform system tray app that magically organizes your Downloads fo
 
 ## Installation
 
+### Download Release (Recommended)
+
+1. Go to [Releases](https://github.com/Bilal-Bjo/BOOP/releases/latest)
+2. Download the zip for your platform:
+   - **macOS:** `boop-mac-v*.zip`
+   - **Windows:** `boop-windows-v*.zip`
+3. Extract and run the installer (see below)
+
 ### macOS
 
 ```bash
-git clone https://github.com/yourusername/boop.git
-cd boop
+# From release download:
+unzip boop-mac-v*.zip
+chmod +x install.sh
+./install.sh
+
+# Or clone from source:
+git clone https://github.com/Bilal-Bjo/BOOP.git
+cd BOOP
 chmod +x install.sh
 ./install.sh
 ```
@@ -51,16 +65,21 @@ chmod +x install.sh
 ### Windows
 
 ```powershell
-git clone https://github.com/yourusername/boop.git
-cd boop
+# From release download:
+# Extract the zip, then:
+.\install.bat
+
+# Or clone from source:
+git clone https://github.com/Bilal-Bjo/BOOP.git
+cd BOOP
 .\install.bat
 ```
 
 ### Linux
 
 ```bash
-git clone https://github.com/yourusername/boop.git
-cd boop
+git clone https://github.com/Bilal-Bjo/BOOP.git
+cd BOOP
 chmod +x install-linux.sh
 ./install-linux.sh
 ```
