@@ -116,7 +116,6 @@ Edit `config.yaml` to customize categories. Comes with **100+ extensions** out o
 
 ```yaml
 watch_folder: ~/Downloads    # or C:\Users\You\Downloads on Windows
-debounce_seconds: 2          # Seconds to wait after file stops changing
 
 categories:
   Images:

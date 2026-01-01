@@ -44,7 +44,7 @@ def load_config() -> dict:
     Load configuration from config.yaml.
 
     Returns:
-        dict: Configuration with watch_folder, debounce_seconds, and categories
+        dict: Configuration with watch_folder and categories
     """
     with open(CONFIG_PATH) as f:
         return yaml.safe_load(f)
@@ -241,7 +241,7 @@ class Boop:
     def start(self):
         """Start watching for new downloads."""
         ext_map = build_extension_map(self.config["categories"])
-        debounce = self.config.get("debounce_seconds", 2)
+        debounce = 2  # seconds to wait after file stops changing
 
         def file_moved_callback(path, category):
             self.last_file = path

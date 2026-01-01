@@ -1,5 +1,4 @@
 watch_folder: ~/Downloads
-debounce_seconds: 2
 
 categories:
   Images:
