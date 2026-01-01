@@ -10,9 +10,19 @@ categories:
     - .svg
     - .webp
     - .heic
+    - .heif
     - .ico
     - .bmp
     - .tiff
+    - .tif
+    - .raw
+    - .cr2
+    - .nef
+    - .psd
+    - .ai
+    - .eps
+    - .avif
+    - .jfif
 
   Documents:
     - .pdf
@@ -25,7 +35,15 @@ categories:
     - .txt
     - .rtf
     - .odt
+    - .ods
+    - .odp
     - .csv
+    - .pages
+    - .numbers
+    - .key
+    - .md
+    - .tex
+    - .log
 
   Videos:
     - .mp4
@@ -35,6 +53,12 @@ categories:
     - .webm
     - .flv
     - .wmv
+    - .m4v
+    - .mpg
+    - .mpeg
+    - .3gp
+    - .ts
+    - .vob
 
   Audio:
     - .mp3
@@ -44,6 +68,11 @@ categories:
     - .m4a
     - .ogg
     - .wma
+    - .aiff
+    - .alac
+    - .opus
+    - .mid
+    - .midi
 
   Archives:
     - .zip
@@ -53,19 +82,62 @@ categories:
     - .gz
     - .bz2
     - .xz
+    - .tgz
+    - .tbz2
+    - .lz
+    - .lzma
+    - .cab
+    - .iso
+    - .img
 
   Code:
     - .py
     - .js
     - .ts
+    - .jsx
+    - .tsx
     - .html
+    - .htm
     - .css
+    - .scss
+    - .sass
+    - .less
     - .json
     - .xml
     - .yaml
     - .yml
+    - .toml
+    - .ini
+    - .cfg
+    - .conf
     - .sh
+    - .bash
+    - .zsh
+    - .bat
+    - .ps1
     - .sql
+    - .java
+    - .c
+    - .cpp
+    - .h
+    - .hpp
+    - .cs
+    - .go
+    - .rs
+    - .rb
+    - .php
+    - .swift
+    - .kt
+    - .scala
+    - .r
+    - .lua
+    - .pl
+    - .ex
+    - .exs
+    - .vue
+    - .svelte
+    - .astro
+    - .ipynb
 
   Applications:
     - .dmg
@@ -73,14 +145,42 @@ categories:
     - .app
     - .exe
     - .msi
+    - .deb
+    - .rpm
+    - .appimage
+    - .apk
+    - .ipa
 
   Fonts:
     - .ttf
     - .otf
     - .woff
     - .woff2
+    - .eot
+    - .fon
 
   Ebooks:
     - .epub
     - .mobi
+    - .azw
     - .azw3
+    - .fb2
+    - .djvu
+
+  3D:
+    - .obj
+    - .fbx
+    - .stl
+    - .blend
+    - .3ds
+    - .dae
+    - .gltf
+    - .glb
+
+  Design:
+    - .fig
+    - .sketch
+    - .xd
+    - .indd
+    - .afdesign
+    - .afphoto

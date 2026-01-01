@@ -27,13 +27,17 @@ A tiny cross-platform system tray app that magically organizes your Downloads fo
 
 ```
 ~/Downloads/
-├── Images/       <- .jpg, .png, .gif, .svg, .webp
-├── Documents/    <- .pdf, .doc, .docx, .xls, .txt
-├── Videos/       <- .mp4, .mov, .avi, .mkv
-├── Audio/        <- .mp3, .wav, .flac, .m4a
-├── Archives/     <- .zip, .rar, .7z, .tar.gz
-├── Code/         <- .py, .js, .html, .css, .json
-├── Applications/ <- .dmg, .pkg, .exe, .msi
+├── Images/       <- .jpg, .png, .gif, .svg, .webp, .heic, .raw, .psd, .ai +more
+├── Documents/    <- .pdf, .doc, .docx, .xls, .xlsx, .ppt, .csv, .md +more
+├── Videos/       <- .mp4, .mov, .avi, .mkv, .webm, .m4v, .mpg +more
+├── Audio/        <- .mp3, .wav, .flac, .m4a, .aac, .ogg, .opus +more
+├── Archives/     <- .zip, .rar, .7z, .tar, .gz, .iso, .img +more
+├── Code/         <- .py, .js, .ts, .jsx, .html, .css, .json, .go, .rs +more
+├── Applications/ <- .dmg, .pkg, .exe, .msi, .deb, .apk, .ipa +more
+├── Fonts/        <- .ttf, .otf, .woff, .woff2
+├── Ebooks/       <- .epub, .mobi, .azw3, .djvu
+├── 3D/           <- .obj, .fbx, .stl, .blend, .gltf
+├── Design/       <- .fig, .sketch, .xd, .indd
 └── Other/        <- everything else
 ```
 
@@ -108,7 +112,7 @@ When a file gets booped, you'll see a notification!
 
 ## Configuration
 
-Edit `config.yaml` to customize:
+Edit `config.yaml` to customize categories. Comes with **100+ extensions** out of the box:
 
 ```yaml
 watch_folder: ~/Downloads    # or C:\Users\You\Downloads on Windows
@@ -118,7 +122,25 @@ categories:
   Images:
     - .jpg
     - .png
-    # Add your own...
+    - .heic
+    - .raw
+    - .psd
+    # ... 20 extensions
+
+  Documents:
+    - .pdf
+    - .docx
+    - .xlsx
+    # ... 19 extensions
+
+  Code:
+    - .py
+    - .js
+    - .ts
+    # ... 47 extensions
+
+  # + Videos, Audio, Archives, Applications,
+  #   Fonts, Ebooks, 3D, Design
 ```
 
 Then restart Boop.
