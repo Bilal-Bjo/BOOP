@@ -104,7 +104,7 @@ class DownloadHandler(FileSystemEventHandler):
             debounce: Seconds to wait for file to stabilize before moving
             on_file_moved: Optional callback(dest_path, category) when file is moved
         """
-        self.watch_folder = watch_folder
+        self.watch_folder = watch_folder.resolve()
         self.ext_map = ext_map
         self.debounce = debounce
         self.on_file_moved = on_file_moved
@@ -120,7 +120,7 @@ class DownloadHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        path = Path(event.src_path)
+        path = Path(event.src_path).resolve()
 
         # Only watch root of Downloads, ignore files in subfolders
         if path.parent != self.watch_folder:
@@ -142,7 +142,7 @@ class DownloadHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        path = Path(event.src_path)
+        path = Path(event.src_path).resolve()
         if path in self.pending:
             self.pending[path] = time.time()
 
