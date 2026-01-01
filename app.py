@@ -19,6 +19,7 @@ Usage:
     python app.py
 """
 
+import os
 import platform
 import shutil
 import subprocess
@@ -104,11 +105,12 @@ class DownloadHandler(FileSystemEventHandler):
             debounce: Seconds to wait for file to stabilize before moving
             on_file_moved: Optional callback(dest_path, category) when file is moved
         """
-        self.watch_folder = watch_folder.resolve()
+        self.watch_folder = watch_folder
+        self.watch_folder_str = str(watch_folder.resolve())
         self.ext_map = ext_map
         self.debounce = debounce
         self.on_file_moved = on_file_moved
-        self.pending: dict[Path, float] = {}
+        self.pending: dict[str, float] = {}  # Use string paths as keys
 
     def on_created(self, event):
         """
@@ -120,17 +122,19 @@ class DownloadHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        path = Path(event.src_path).resolve()
+        filepath = event.src_path
+        filename = os.path.basename(filepath)
+        parent = os.path.dirname(filepath)
 
         # Only watch root of Downloads, ignore files in subfolders
-        if path.parent != self.watch_folder:
+        if os.path.normcase(os.path.normpath(parent)) != os.path.normcase(os.path.normpath(self.watch_folder_str)):
             return
 
         # Ignore hidden files (like .DS_Store, .crdownload, etc.)
-        if path.name.startswith("."):
+        if filename.startswith("."):
             return
 
-        self.pending[path] = time.time()
+        self.pending[filepath] = time.time()
 
     def on_modified(self, event):
         """
@@ -142,9 +146,9 @@ class DownloadHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        path = Path(event.src_path).resolve()
-        if path in self.pending:
-            self.pending[path] = time.time()
+        filepath = event.src_path
+        if filepath in self.pending:
+            self.pending[filepath] = time.time()
 
     def process_pending(self):
         """
@@ -156,21 +160,21 @@ class DownloadHandler(FileSystemEventHandler):
         now = time.time()
         to_remove = []
 
-        for path, last_modified in list(self.pending.items()):
+        for filepath, last_modified in list(self.pending.items()):
             # Skip if file was recently modified (still downloading)
             if now - last_modified < self.debounce:
                 continue
 
-            to_remove.append(path)
+            to_remove.append(filepath)
 
-            if not path.exists():
+            if not os.path.exists(filepath):
                 continue
 
-            self.move_file(path)
+            self.move_file(Path(filepath))
 
         # Clean up processed files from pending list
-        for path in to_remove:
-            self.pending.pop(path, None)
+        for filepath in to_remove:
+            self.pending.pop(filepath, None)
 
     def move_file(self, path: Path):
         """
