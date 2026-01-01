@@ -116,7 +116,7 @@ Edit `config.yaml` to customize categories. Comes with **100+ extensions** out o
 
 ```yaml
 watch_folder: ~/Downloads    # or C:\Users\You\Downloads on Windows
-debounce_seconds: 2          # Wait for downloads to finish
+debounce_seconds: 2          # Seconds to wait after file stops changing
 
 categories:
   Images:
@@ -156,7 +156,7 @@ Then restart Boop.
 │   Watchdog detects file creation                            │
 │              │                                              │
 │              ▼                                              │
-│   Debounce: wait 2 seconds for download to complete         │
+│   Wait for file to stop changing (download complete)        │
 │              │                                              │
 │              ▼                                              │
 │   Check file extension → lookup category                    │
