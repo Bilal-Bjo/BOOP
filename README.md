@@ -5,7 +5,7 @@ A tiny cross-platform system tray app that magically organizes your Downloads fo
 ```
      ╔═══════════════════════════════════════╗
      ║                                       ║
-     ║        ✨ JUST BOOP IT ✨             ║
+     ║        ✨ JUST BOOP IT ✨            ║
      ║                                       ║
      ║   Downloads messy? Don't stress.      ║
      ║   Boop handles the rest.              ║
