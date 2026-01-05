@@ -33,6 +33,9 @@ import yaml
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+# Extensions used by browsers for incomplete downloads
+TEMP_EXTENSIONS = {'.crdownload', '.part', '.download', '.partial', '.tmp'}
+
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
@@ -85,7 +88,7 @@ class DownloadHandler(FileSystemEventHandler):
         watch_folder: The folder being monitored (e.g., ~/Downloads)
         ext_map: Maps file extensions to category names
         debounce: Seconds to wait after last file modification
-        pending: Files waiting to be moved {path: last_modified_time}
+        pending: Files waiting to be moved {path: (timestamp, size)}
         on_file_moved: Callback function when a file is moved
     """
 
@@ -110,7 +113,7 @@ class DownloadHandler(FileSystemEventHandler):
         self.ext_map = ext_map
         self.debounce = debounce
         self.on_file_moved = on_file_moved
-        self.pending: dict[str, float] = {}  # Use string paths as keys
+        self.pending: dict[str, tuple[float, int]] = {}  # filepath → (timestamp, size)
 
     def on_created(self, event):
         """
@@ -130,11 +133,21 @@ class DownloadHandler(FileSystemEventHandler):
         if os.path.normcase(os.path.normpath(parent)) != os.path.normcase(os.path.normpath(self.watch_folder_str)):
             return
 
-        # Ignore hidden files (like .DS_Store, .crdownload, etc.)
+        # Ignore hidden files (like .DS_Store)
         if filename.startswith("."):
             return
 
-        self.pending[filepath] = time.time()
+        # Ignore temporary download files (incomplete downloads)
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in TEMP_EXTENSIONS:
+            return
+
+        # Track with timestamp and file size for stability check
+        try:
+            size = os.path.getsize(filepath)
+        except OSError:
+            size = -1
+        self.pending[filepath] = (time.time(), size)
 
     def on_modified(self, event):
         """
@@ -148,28 +161,46 @@ class DownloadHandler(FileSystemEventHandler):
 
         filepath = event.src_path
         if filepath in self.pending:
-            self.pending[filepath] = time.time()
+            try:
+                size = os.path.getsize(filepath)
+            except OSError:
+                size = -1
+            self.pending[filepath] = (time.time(), size)
 
     def process_pending(self):
         """
         Move files that have been stable for the debounce period.
 
         Called periodically to check if any pending files are ready to move.
-        A file is ready when it hasn't been modified for `debounce` seconds.
+        A file is ready when it hasn't been modified for `debounce` seconds
+        AND its file size hasn't changed (ensures download is complete).
         """
         now = time.time()
         to_remove = []
 
-        for filepath, last_modified in list(self.pending.items()):
+        for filepath, (last_modified, last_size) in list(self.pending.items()):
             # Skip if file was recently modified (still downloading)
             if now - last_modified < self.debounce:
                 continue
 
-            to_remove.append(filepath)
-
+            # Check if file still exists
             if not os.path.exists(filepath):
+                to_remove.append(filepath)
                 continue
 
+            # Verify file size is stable (catches downloads still in progress)
+            try:
+                current_size = os.path.getsize(filepath)
+            except OSError:
+                continue  # Can't read size, skip for now
+
+            if current_size != last_size:
+                # Size changed - reset timer with new size
+                self.pending[filepath] = (time.time(), current_size)
+                continue
+
+            # File is stable - safe to move
+            to_remove.append(filepath)
             self.move_file(Path(filepath))
 
         # Clean up processed files from pending list
@@ -297,6 +328,11 @@ class Boop:
                 continue
 
             ext = path.suffix.lower()
+
+            # Skip temporary download files (incomplete downloads)
+            if ext in TEMP_EXTENSIONS:
+                continue
+
             category = ext_map.get(ext, "Other")
             dest_folder = self.watch_folder / category
 
